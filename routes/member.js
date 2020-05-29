@@ -1,15 +1,9 @@
 var express = require('express');
 var router = express.Router();
-
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.render('index', { title: 'Express' });
-// });
+// 接收 post 資料
+router.post('/', function(req, res, next) {
+  console.log(req.body.test)
+  res.json({'message':'ok'})
+});
 
 module.exports = router;
-
-const IndexController = require('../controllers/modify_controller');
-
-indexController = new IndexController();
-
-router.get('/', indexController.sayHiController);
