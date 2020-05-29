@@ -1,4 +1,4 @@
-const IndexModel = require('../models/index_model');
+const IndexModel = require('../models/register_model');
 
 indexModel = new IndexModel();
 

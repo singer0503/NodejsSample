@@ -8,7 +8,7 @@ var router = express.Router();
 
 module.exports = router;
 
-const IndexController = require('../controllers/index_controller');
+const IndexController = require('../controllers/modify_controller');
 
 indexController = new IndexController();
 
