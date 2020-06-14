@@ -8,12 +8,16 @@ const connection = mysqlt.createConnection({
   password: config.mysql.password,
   database: config.mysql.database
 });
+// 可以印出連線資訊
+//console.log(connection);
 
 connection.connect(err => {
   if (err) {
+    
     console.log('connecting error');
+    console.log(err);
   } else {
-    console.log('connecting success');
+    console.log('connecting MySQL Success!');
   }
 });
 
