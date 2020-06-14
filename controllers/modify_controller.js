@@ -1,13 +1,18 @@
 const toRegister = require("../models/register_model");
 const CheckService = require("../service/member_check");
+const encryption = require("../models/encryption.js")
+
 check = new CheckService();
 
 module.exports = class Member {
   postRegister(req, res, next) {
+    // 進行加密
+    const password = encryption(req.body.password);
+
     const memberData = {
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password,
+      password: password,
       create_date: onTime(),
     };
     // 檢核 email 格式正確性
