@@ -7,7 +7,7 @@ const MemberModifyMethod = require('../controllers/modify_controller');
 memberModifyMethod = new MemberModifyMethod();
 
 // 這裡記得要加上「斜線/」 不然只有register 會無做用
-router.post('/register', memberModifyMethod.postRegister)
+router.post('/register', memberModifyMethod.postRegister);
 
 // 因為 javascript 是一行一行執行，若開一開始就 exports 出去就會沒動作
 module.exports = router;

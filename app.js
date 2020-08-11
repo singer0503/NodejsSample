@@ -1,3 +1,18 @@
+// 這邊是 AppDynamics 的 agent 監控設定
+require("appdynamics").profile({
+  controllerHostName: 'presidio202002102005254.saas.appdynamics.com',
+  controllerPort: 443,
+  
+  // If SSL, be sure to enable the next line
+  controllerSslEnabled: true,
+  accountName: 'presidio202002102005254',
+  accountAccessKey: 'jmmv15qjdgn2',
+  applicationName: 'nodeSample',
+  tierName: 'node1',
+  nodeName: 'process' // The controller will automatically append the node name with a unique number
+ });
+
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
