@@ -1,14 +1,16 @@
 const toRegister = require("../models/register_model");
+const loginAction = require("../models/login_model");
+
 const CheckService = require("../service/member_check");
-const encryption = require("../models/encryption.js")
+const encryption = require("../models/encryption.js");
 
 check = new CheckService();
 
 module.exports = class Member {
+  // 會員註冊
   postRegister(req, res, next) {
     // 進行加密
     const password = encryption(req.body.password);
-
     const memberData = {
       name: req.body.name,
       email: req.body.email,
@@ -45,6 +47,47 @@ module.exports = class Member {
         }
       );
     }
+  }
+
+  // 會員登入
+  postLogin(req, res, next) {
+    // 進行加密
+    const password = encryption(req.body.password);
+    const memberData = {
+      name: req.body.name,
+      email: req.body.email,
+      password: password,
+      create_date: onTime(),
+    };
+    // 檢核 email 格式正確性
+    const checkEmail = check.checkEmail(memberData.email);
+    // 不符合email格式
+    if (checkEmail === false) {
+      res.json({
+        result: {
+          status: "登入失敗",
+          err: "請輸入正確的 Email 格式（xxx@gmail.com）",
+        },
+      });
+    }
+
+    loginAction(memberData).then((rows) => {
+      if (check.checkNull(rows) === true) {
+        res.json({
+          result: {
+            status: "登入失敗。",
+            err: "請輸入正確的帳號或密碼。",
+          },
+        });
+      } else if (check.checkNull(rows) === false) {
+        res.json({
+          result: {
+            status: "登入成功。",
+            loginMember: "歡迎 " + rows[0].name + " 的登入！",
+          },
+        });
+      }
+    });
   }
 };
 
