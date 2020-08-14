@@ -7,5 +7,5 @@ module.exports = {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE
     },
-    sceret: process.env.MY_SECRET
+    secret: process.env.MY_SECRET
 }
