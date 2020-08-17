@@ -3,9 +3,10 @@ const loginAction = require("../models/login_model");
 
 const CheckService = require("../service/member_check");
 const encryption = require("../models/encryption.js");
+const verify =require("../models/verification_model.js")
 
-const jwt =require("jsonwebtoken");
-const config = require('../config/development_config');
+const jwt = require("jsonwebtoken");
+const config = require("../config/development_config");
 
 check = new CheckService();
 
@@ -84,20 +85,48 @@ module.exports = class Member {
         });
       } else if (check.checkNull(rows) === false) {
         // 產生token
-        const token = jwt.sign({
-            algorithm: 'HS256',
-            exp: Math.floor(Date.now() / 1000) + (60 * 60), // token一個小時後過期。
-            data: rows[0].id
-        }, config.secret);
-        res.setHeader('token', token);
+        const token = jwt.sign(
+          {
+            algorithm: "HS256",
+            exp: Math.floor(Date.now() / 1000) + 60 * 60, // token一個小時後過期。
+            data: rows[0].id,
+          },
+          config.secret
+        );
+        res.setHeader("token", token);
         res.json({
-            result: {
-                status: "登入成功。",
-                loginMember: "歡迎 " + rows[0].name + " 的登入！",
-            }
-        })
-    }
+          result: {
+            status: "登入成功。",
+            loginMember: "歡迎 " + rows[0].name + " 的登入！",
+          },
+        });
+      }
     });
+  }
+
+  putUpdate(req, res, next) {
+    const token = req.headers["token"];
+    //確定token是否有輸入
+    if (check.checkNull(token) === true) {
+      res.json({
+        err: "請輸入token！",
+      });
+    } else if (check.checkNull(token) === false) {
+      verify(token).then((tokenResult) => {
+        if (tokenResult === false) {
+          res.json({
+            result: {
+              status: "token錯誤。",
+              err: "請重新登入。",
+            },
+          });
+        } else {
+          res.json({
+            test: "token正確",
+          });
+        }
+      });
+    }
   }
 };
 

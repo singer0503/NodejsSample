@@ -11,5 +11,7 @@ router.post('/register', memberModifyMethod.postRegister);
 
 router.post('/login', memberModifyMethod.postLogin);
 
+router.put('/update', memberModifyMethod.putUpdate);
+
 // 因為 javascript 是一行一行執行，若開一開始就 exports 出去就會沒動作
 module.exports = router;
